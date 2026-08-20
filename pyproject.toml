@@ -1,0 +1,102 @@
+# --------------------------------------------------------------------
+# Created with the help the build tool 'uv'.
+# --------------------------------------------------------------------
+[project]
+name = "aas"
+version = "0.1.0"
+description = "app for creating ASCII representations of images."
+readme = "README.md"
+authors = [
+    { name = "Durim Miziraj", email = "durim.miziraj@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pillow>=12.3.0"
+]
+keywords = ["ascii", "image", "cli"]
+licence = "BSD-2-Clause"
+licence-files = ["LICENCE"]
+
+[project.scripts]
+aas = "aas.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.12.2,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "mypy>=2.3.0",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.16.2"
+]
+
+
+# --------------------------------------------------------------------
+# Tool configurations 
+# --------------------------------------------------------------------
+# Ruff 
+
+[tool.ruff]
+line-length = 70
+target-version = "py312"
+preview = true
+unsafe-fixes = false
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "COM812",
+    "ISC001",
+    "D203",
+    "D213"
+]
+fixable = ["ALL"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+docstring-code-format = true
+preview = true
+
+
+# --------------------------------------------------------------------
+# pytest
+
+[tool.pytest]
+testpaths = ["tests"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--cov=aas",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-fail-under=0"
+]
+
+# --------------------------------------------------------------------
+# Coverage
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 90
+
+
+# --------------------------------------------------------------------
+# mypy
+
+[tool.mypy]
+strict = true
+warn_unreachable = true
+pretty = true
+show_error_codes = true
