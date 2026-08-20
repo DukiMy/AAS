@@ -10,46 +10,6 @@ from dataclasses import dataclass
 # --------------------------------------------------------------------
 
 @dataclass(frozen=True, slots=True)
-class ExitRequested:
-    """Notify observers of exit request."""
-
-
-@dataclass(frozen=True, slots=True)
-class ImageInfoRequested:
-    """Notify observers of session information request."""
-
-
-@dataclass(frozen=True, slots=True)
-class LoadImageRequested:
-    """Notify observers of image load request."""
-
-    filename: str
-    alias: str | None = None
-
-
-@dataclass(frozen=True, slots=True)
-class LoadSessionRequested:
-    """Notify observers of session load request."""
-
-    filename: str
-
-
-@dataclass(frozen=True, slots=True)
-class SaveSessionRequested:
-    """Notify observers of session save request."""
-
-    filename: str
-
-
-@dataclass(frozen=True, slots=True)
-class RenderRequested:
-    """Notify observers of render request."""
-
-    image: str | None = None
-    destination: str | None = None
-
-
-@dataclass(frozen=True, slots=True)
 class ChangeBrightness:
     """Notify observers of brightness change request."""
 
@@ -81,17 +41,73 @@ class ChangeWidth:
     width: int
 
 
+@dataclass(frozen=True, slots=True)
+class DisplayNoticeRequested:
+    "Notify observers of noticedisplay request."
+
+    notice: str
+
+
+@dataclass(frozen=True, slots=True)
+class DisplayWarningRequested:
+    """Notify observers of display-warning request."""
+
+    warning: str
+
+
+@dataclass(frozen=True, slots=True)
+class ExitRequested:
+    """Notify observers of exit request."""
+
+
+@dataclass(frozen=True, slots=True)
+class ImageInfoRequested:
+    """Notify observers of session information request."""
+
+
+@dataclass(frozen=True, slots=True)
+class LoadImageRequested:
+    """Notify observers of image load request."""
+
+    filename: str
+    alias: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class LoadSessionRequested:
+    """Notify observers of session load request."""
+
+    filename: str
+
+
+@dataclass(frozen=True, slots=True)
+class RenderRequested:
+    """Notify observers of render request."""
+
+    image: str | None = None
+    destination: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class SaveSessionRequested:
+    """Notify observers of session save request."""
+
+    filename: str
+
+
 type ControllerEvent = (
-    ExitRequested
-    | ImageInfoRequested
-    | LoadImageRequested
-    | LoadSessionRequested
-    | SaveSessionRequested
-    | RenderRequested
-    | ChangeBrightness
+    ChangeBrightness
     | ChangeContrast
     | ChangeHeight
     | ChangeWidth
+    | DisplayNoticeRequested
+    | DisplayWarningRequested
+    | ExitRequested
+    | ImageInfoRequested
+    | LoadImageRequested
+    | LoadSessionRequested
+    | RenderRequested
+    | SaveSessionRequested
 )
 
 
@@ -109,8 +125,6 @@ class DisplayAsciiRendering:
 @dataclass(frozen=True, slots=True)
 class ImageSummary:
     """Notify view to display information about one image."""
-
-    name: str
     filename: str
     size: tuple[int, int]
     target_size: tuple[int, int]
@@ -133,9 +147,17 @@ class DisplayWarning:
     warning: str
 
 
+@dataclass(frozen=True, slots=True)
+class DisplayNotice:
+    """Notify view to display a warning."""
+
+    notice: str
+
+
 type ModelEvent = (
-    ExitRequested
-    | DisplayAsciiRendering
+    DisplayAsciiRendering
+    | DisplayNotice
     | DisplaySessionInfo
     | DisplayWarning
+    | ExitRequested
 )

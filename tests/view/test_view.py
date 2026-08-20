@@ -5,10 +5,22 @@ import pytest
 
 from aas.events.events import (
     DisplayAsciiRendering,
+    DisplayNotice,
     DisplayWarning,
     ExitRequested
 )
 from aas.view.view import CLIView
+
+
+def test_display_notice(capsys: pytest.CaptureFixture[str]) -> None:
+    """Print warning supplied by model."""
+    view = CLIView()
+
+    view.on_model_event(DisplayNotice("A notice."))
+
+    captured = capsys.readouterr()
+
+    assert captured.out == "A notice."
 
 
 def test_display_warning(capsys: pytest.CaptureFixture[str]) -> None:

@@ -11,8 +11,11 @@ from aas.events.events import (
     ChangeWidth,
     ControllerEvent,
     DisplayAsciiRendering,
+    DisplayNotice,
+    DisplayNoticeRequested,
     DisplaySessionInfo,
     DisplayWarning,
+    DisplayWarningRequested,
     ExitRequested,
     ImageInfoRequested,
     ImageSummary,
@@ -396,3 +399,28 @@ class AASModel:
 
         """
         self._notify_observers(ExitRequested())
+
+
+    @on_controller_event.register
+    def _(self, event: DisplayWarningRequested) -> None:
+        """Request display of warning.
+
+        Param event:
+            A controllerevent requesting a warning to be displayed.
+
+         """
+        self._notify_observers(
+            DisplayWarning(event.warning)
+        )
+
+    @on_controller_event.register
+    def _(self, event: DisplayNoticeRequested) -> None:
+        """Request display of notice.
+
+        Param event:
+            A controllerevent requesting a notice to be displayed.
+
+         """
+        self._notify_observers(
+            DisplayNotice(event.notice)
+        )

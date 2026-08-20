@@ -1,5 +1,10 @@
 # Copyright (c) 2026 Durim Miziraj.
 # --------------------------------------------------------------------
+
+
+# TODO: Remove all prints to view.
+#   - Create a new info signal for printing to the view, signals must pass the domain.
+
 """Provide the CLI controller."""
 
 from aas.events.events import (
@@ -8,6 +13,8 @@ from aas.events.events import (
     ChangeHeight,
     ChangeWidth,
     ControllerEvent,
+    DisplayNoticeRequested,
+    DisplayWarningRequested,
     ExitRequested,
     ImageInfoRequested,
     LoadImageRequested,
@@ -68,21 +75,18 @@ class CLIController:
 
         return first, remainder
 
-    @staticmethod
-    def _take_command() -> str:
+    def _take_command(self) -> str:
         """Read a command from the user.
 
         Returns:
             A string of commands with no spaces at [0] and [-1].
 
         """
-        return input("AAS: ").strip()
+        self._notify_observers(
+            DisplayNoticeRequested("AAS: ")
+        )
+        return input().strip()
 
-    @staticmethod
-    def _invalid_command() -> None:
-        """Print invalid-command message."""
-
-        print("Invalid command.")
 
     def _parse_command(self, command: str) -> ControllerEvent | None:
         """Parse a complete CLI command.
@@ -118,8 +122,7 @@ class CLIController:
         if subcommand == "quit":
             return self._parse_quit_command(remainder)
 
-        self._invalid_command()
-        return None
+        return DisplayWarningRequested(f"Invalid command: {command}")
 
     def _parse_load_image(
         self, command: str
@@ -149,8 +152,7 @@ class CLIController:
 
             return LoadImageRequested(filename, alias)
 
-        self._invalid_command()
-        return None
+        return DisplayWarningRequested("Invalid command")
 
     def _parse_load_session(
         self, command: str
@@ -167,8 +169,7 @@ class CLIController:
         parts = command.split()
 
         if len(parts) != 1:
-            self._invalid_command()
-            return None
+            return DisplayWarningRequested("Invalid command")
 
         filename = parts[0]
 
@@ -195,8 +196,7 @@ class CLIController:
         if subcommand == "session":
             return self._parse_load_session(remainder)
 
-        self._invalid_command()
-        return None
+        return DisplayWarningRequested("Invalid command")
 
 
     def _parse_width(
@@ -219,12 +219,10 @@ class CLIController:
             width = int(value)
 
         except ValueError:
-            self._invalid_command()
-            return None
+            return DisplayWarningRequested("Invalid command.")
 
         if width <= 0:
-            self._invalid_command()
-            return None
+            return DisplayWarningRequested("Invalid command.")
 
         return ChangeWidth(image, width)
 
@@ -248,12 +246,10 @@ class CLIController:
             height = int(value)
 
         except ValueError:
-            self._invalid_command()
-            return None
+            return DisplayWarningRequested("Invalid command.")
 
         if height <= 0:
-            self._invalid_command()
-            return None
+            return DisplayWarningRequested("Invalid command.")
 
         return ChangeHeight(image, height)
 
@@ -277,12 +273,10 @@ class CLIController:
             brightness = float(value)
 
         except ValueError:
-            self._invalid_command()
-            return None
+            return DisplayWarningRequested("Invalid command.")
 
         if brightness < 0:
-            self._invalid_command()
-            return None
+            return DisplayWarningRequested("Invalid command.")
 
         return ChangeBrightness(image, brightness)
 
@@ -305,12 +299,10 @@ class CLIController:
         try:
             contrast = float(value)
         except ValueError:
-            self._invalid_command()
-            return None
+            return DisplayWarningRequested("Invalid command.")
 
         if contrast < 0:
-            self._invalid_command()
-            return None
+            return DisplayWarningRequested("Invalid command.")
 
         return ChangeContrast(image, contrast)
 
@@ -330,8 +322,7 @@ class CLIController:
         parts = command.split()
 
         if len(parts) != 3:
-            self._invalid_command()
-            return None
+            return DisplayWarningRequested("Invalid command.")
 
         image = parts[0]
         property_name = parts[1].lower()
@@ -349,8 +340,7 @@ class CLIController:
         if property_name == "contrast":
             return self._parse_contrast(image, value)
 
-        self._invalid_command()
-        return None
+        return DisplayWarningRequested("Invalid command.")
 
     def _parse_render_command(
         self, command: str
@@ -383,8 +373,7 @@ class CLIController:
                 image=parts[0], destination=parts[2]
             )
 
-        self._invalid_command()
-        return None
+        return DisplayWarningRequested("Invalid command.")
 
     def _parse_save_command(
         self, command: str
@@ -410,8 +399,7 @@ class CLIController:
 
             return SaveSessionRequested(filename)
 
-        self._invalid_command()
-        return None
+        return DisplayWarningRequested("Invalid command.")
 
     def _parse_info_command(
         self, command: str

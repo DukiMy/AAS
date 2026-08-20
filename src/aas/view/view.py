@@ -9,8 +9,9 @@ from aas.events.events import (
     DisplayAsciiRendering,
     DisplaySessionInfo,
     DisplayWarning,
+    DisplayNotice,
     ExitRequested,
-    ModelEvent,
+    ModelEvent
 )
 
 
@@ -94,3 +95,15 @@ class CLIView:
 
         """
         print(f"Warning: {event.warning}")
+
+
+    @on_model_event.register
+    def _(self, event: DisplayNotice) -> None:
+        """Display warning.
+
+        Param event:
+            A modelevent requesting the display of a warning.
+
+        """
+        print(f"{event.notice}", end="")
+    

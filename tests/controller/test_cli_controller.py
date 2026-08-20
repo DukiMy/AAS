@@ -15,7 +15,8 @@ from aas.events.events import (
     LoadImageRequested,
     LoadSessionRequested,
     RenderRequested,
-    SaveSessionRequested
+    SaveSessionRequested,
+    DisplayWarningRequested
 )
 
 
@@ -55,8 +56,7 @@ def test_invalid_load(
 
     result = controller._parse_command(command)
 
-    assert result is None
-    assert capsys.readouterr().out == "Invalid command.\n"
+    assert result == DisplayWarningRequested("Invalid command")
 
 
 @pytest.mark.parametrize(
@@ -98,8 +98,7 @@ def test_invalid_set_commands(
 
     result = controller._parse_command(command)
 
-    assert result is None
-    assert capsys.readouterr().out == "Invalid command.\n"
+    assert result == DisplayWarningRequested(f"Invalid command: {command}")
 
 
 @pytest.mark.parametrize(
