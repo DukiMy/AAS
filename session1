@@ -1,0 +1,13 @@
+{
+    "current": "img/flag.png",
+    "images": {
+        "img/flag.png": {
+            "filename": "img/flag.png",
+            "alias": null,
+            "target_width": 50,
+            "target_height": 18,
+            "brightness": 1.0,
+            "contrast": 5.0
+        }
+    }
+}
