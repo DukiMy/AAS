@@ -12,4 +12,8 @@ __pycache__/
 # Coverage
 .coverage
 htmlcov/
+htmlmypy/
 coverage.xml
+
+# Uv specifics
+uv.lock
