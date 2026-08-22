@@ -1,6 +1,6 @@
 from argparse import (
     ArgumentParser,
-    RawDescriptionHelpFormatter,
+    RawDescriptionHelpFormatter
 )
 from importlib.metadata import PackageMetadata, metadata
 from typing import Any
@@ -11,7 +11,7 @@ class AASArgParser(ArgumentParser):
     def __init__(self) -> None:
         """Initialize the AAS argument parser."""
 
-        project_metadata = metadata("aas")
+        project_metadata: PackageMetadata = metadata("aas")
 
         super().__init__(
             **self._usage_info(project_metadata)
@@ -22,29 +22,32 @@ class AASArgParser(ArgumentParser):
     @staticmethod
     def _usage_info(
         project_metadata: PackageMetadata,
-    ) -> dict[str, Any]:
+    ) -> dict[str, str | None]:
         """Build and return parser configuration."""
 
-        prog = project_metadata["Name"]
-        description = f"CLI {project_metadata['Summary']}"
-
-        epilog = """
+        command_spec = """
 commands:
-  load PATH  load an image
-  render     render a loaded image
-  info       print information about the image file
-  quit       exit the program
+  load image PATH               load an image with PATH as ALIAS
+  load image PATH as ALIAS      load an image with ALIAS
+  render                        render the current image
+  render ALIAS                  render an image with ALIAS
+  render ALIAS to DESTINATION   render ascii to file at DESTINATION
+  set ALIAS brightness FACTOR   set brightness to a multiple of FACTOR
+  set ALIAS contrast FACTOR     set contrast to a multiple of FACTOR
+  save session as SESSION_NAME  save the current session under SESSION_NAME
+  load session as SESSION_NAME  load a session under SESSION_NAME
+  info                          print session info
+  quit                          exit the program
+
+  (FACTOR >= 0; 1.0 = unchanged)
 """
 
-        formatter_class = RawDescriptionHelpFormatter
-        color = False
-
         usage_info = {
-            "prog": prog,
-            "description": description,
-            "epilog": epilog,
-            "formatter_class": formatter_class,
-            "color": color,
+            "prog": project_metadata["Name"],
+            "description": f"CLI {project_metadata['Summary']}",
+            "epilog": command_spec,
+            "formatter_class": RawDescriptionHelpFormatter,
+            "color": True
         }
 
         return usage_info

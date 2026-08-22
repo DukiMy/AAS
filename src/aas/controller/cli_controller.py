@@ -152,7 +152,7 @@ class CLIController:
 
             return LoadImageRequested(filename, alias)
 
-        return DisplayWarningRequested("Invalid command")
+        return DisplayWarningRequested(f"Invalid command: {command}")
 
     def _parse_load_session(
         self, command: str
@@ -169,7 +169,7 @@ class CLIController:
         parts = command.split()
 
         if len(parts) != 1:
-            return DisplayWarningRequested("Invalid command")
+            return DisplayWarningRequested(f"Invalid command: {command}")
 
         filename = parts[0]
 
@@ -196,7 +196,7 @@ class CLIController:
         if subcommand == "session":
             return self._parse_load_session(remainder)
 
-        return DisplayWarningRequested("Invalid command")
+        return DisplayWarningRequested(f"Invalid command: {command}")
 
 
     def _parse_width(
@@ -219,10 +219,10 @@ class CLIController:
             width = int(value)
 
         except ValueError:
-            return DisplayWarningRequested("Invalid command.")
+            return DisplayWarningRequested(f"Invalid width value: {value}")
 
         if width <= 0:
-            return DisplayWarningRequested("Invalid command.")
+            return DisplayWarningRequested(f"Invalid width: {width}")
 
         return ChangeWidth(image, width)
 
@@ -246,10 +246,10 @@ class CLIController:
             height = int(value)
 
         except ValueError:
-            return DisplayWarningRequested("Invalid command.")
+            return DisplayWarningRequested(f"Invalid height value: {value}")
 
         if height <= 0:
-            return DisplayWarningRequested("Invalid command.")
+            return DisplayWarningRequested(f"Invalid height: {height}")
 
         return ChangeHeight(image, height)
 
@@ -273,10 +273,10 @@ class CLIController:
             brightness = float(value)
 
         except ValueError:
-            return DisplayWarningRequested("Invalid command.")
+            return DisplayWarningRequested(f"Invalid brightness value: {value}")
 
         if brightness < 0:
-            return DisplayWarningRequested("Invalid command.")
+            return DisplayWarningRequested(f"Invalid brightness: {brightness}")
 
         return ChangeBrightness(image, brightness)
 
@@ -299,10 +299,10 @@ class CLIController:
         try:
             contrast = float(value)
         except ValueError:
-            return DisplayWarningRequested("Invalid command.")
+            return DisplayWarningRequested(f"Invalid contrast value: {value}")
 
         if contrast < 0:
-            return DisplayWarningRequested("Invalid command.")
+            return DisplayWarningRequested(f"Invalid contrast: {contrast}")
 
         return ChangeContrast(image, contrast)
 
@@ -322,7 +322,7 @@ class CLIController:
         parts = command.split()
 
         if len(parts) != 3:
-            return DisplayWarningRequested("Invalid command.")
+            return DisplayWarningRequested(f"Invalid command: {command}")
 
         image = parts[0]
         property_name = parts[1].lower()
@@ -340,7 +340,7 @@ class CLIController:
         if property_name == "contrast":
             return self._parse_contrast(image, value)
 
-        return DisplayWarningRequested("Invalid command.")
+        return DisplayWarningRequested(f"Invalid command: {command}")
 
     def _parse_render_command(
         self, command: str
@@ -373,7 +373,7 @@ class CLIController:
                 image=parts[0], destination=parts[2]
             )
 
-        return DisplayWarningRequested("Invalid command.")
+        return DisplayWarningRequested(f"Invalid render command: {command}")
 
     def _parse_save_command(
         self, command: str
@@ -399,7 +399,7 @@ class CLIController:
 
             return SaveSessionRequested(filename)
 
-        return DisplayWarningRequested("Invalid command.")
+        return DisplayWarningRequested(f"Invalid save command: {command}")
 
     def _parse_info_command(
         self, command: str

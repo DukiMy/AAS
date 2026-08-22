@@ -125,6 +125,7 @@ class DisplayAsciiRendering:
 @dataclass(frozen=True, slots=True)
 class ImageSummary:
     """Notify view to display information about one image."""
+    name: str
     filename: str
     size: tuple[int, int]
     target_size: tuple[int, int]
