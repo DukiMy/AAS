@@ -22,35 +22,38 @@ from aas.events.events import (
     SaveSessionRequested
 )
 from aas.events.protocols import ControllerObserver
+from aas.controller.controller import Controller
 
 
-class CLIController:
+class CLIController(Controller):
     """Control CLI interaction."""
 
     def __init__(self) -> None:
         """Initialize controller."""
 
-        self._observers: list[ControllerObserver] = []
+        super(CLIController, self).__init__()
 
-    def add_observer(self, observer: ControllerObserver) -> None:
-        """Register an observer.
-
-        Param observer:
-            An observer of this controllers events.
-
-        """
-        self._observers.append(observer)
-
-    def _notify_observers(self, event: ControllerEvent) -> None:
-        """Notify all registered observers.
-        
-        Param event:
-            The controllerevent that will be sent to the observers.
-
-        """
-        for observer in self._observers:
-            observer.on_controller_event(event)
-
+    #     self._observers: list[ControllerObserver] = []
+    #
+    # def add_observer(self, observer: ControllerObserver) -> None:
+    #     """Register an observer.
+    #
+    #     Param observer:
+    #         An observer of this controllers events.
+    #
+    #     """
+    #     self._observers.append(observer)
+    #
+    # def _notify_observers(self, event: ControllerEvent) -> None:
+    #     """Notify all registered observers.
+    #
+    #     Param event:
+    #         The controllerevent that will be sent to the observers.
+    #
+    #     """
+    #     for observer in self._observers:
+    #         observer.on_controller_event(event)
+    #
     @staticmethod
     def _split_first(command: str) -> tuple[str | None, str]:
         """Split first word from remaining command.
@@ -449,7 +452,7 @@ class CLIController:
             A string of commands with no spaces at [0] and [-1].
 
         """
-        self._notify_observers(
+        super().notify_observers(
             DisplayNoticeRequested("AAS: ")
         )
         return input().strip()
@@ -471,4 +474,4 @@ class CLIController:
             if event is None:
                 continue
 
-            self._notify_observers(event)
+            super().notify_observers(event)
