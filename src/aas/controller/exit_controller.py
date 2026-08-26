@@ -3,18 +3,20 @@ from aas.events.events import ExitRequested
 
 class ExitController(Controller):
     """docstring for ExitController."""
+
     def __init__(self):
+        """Inits the exitcontroller."""
         super(ExitController, self).__init__()
 
-    def parse_quit_command(self, command: str) -> ExitRequested:
-        """Parse a quit command.
+    def parse(self, command) -> None:
+        """Notifies observers of user exit request.
 
         Param command:
-            An exit command which will be parsed.           
-        Returns:
-            A controllerevent representing a request to exit the appl-
-            ication.
-            
+            Ignored.
+
+        Note:
+            The parameter 'command' is for standardising the 'parse'
+            functions across the controller modules.
+
         """
         super().notify_observers(ExitRequested())
-

@@ -156,7 +156,7 @@ class SetController(Controller):
         )
 
 
-    def parse_set_command(self, command: str) -> None:
+    def parse(self, command: str) -> None:
         """Parse a set command.
 
         Param command:

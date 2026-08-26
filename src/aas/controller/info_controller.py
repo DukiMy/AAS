@@ -4,18 +4,20 @@ from aas.events.events import ImageInfoRequested
 
 class InfoController(Controller):
     """docstring for InfoController."""
+
     def __init__(self):
+        """Inits the InfoController."""
         super(InfoController, self).__init__()
 
-    def parse_info_command(self, command: str) -> None:
-        """Parse an info command.
+    def parse(self, command: str) -> None:
+        """Notifies observers of user info request.
 
         Param command:
-            An info request command that will be parsed.
+            Ignored.
 
-        Returns:
-            A controllerevent representing a request to display infor-
-            mation of an image.
+        Note:
+            The parameter 'command' is for standardising the 'parse'
+            functions across the controller modules.
 
         """
         super().notify_observers(ImageInfoRequested())

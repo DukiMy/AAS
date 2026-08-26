@@ -9,7 +9,7 @@ class SaveController(Controller):
     def __init__(self):
         super(SaveController, self).__init__()
 
-    def _parse_save_command(self, command: str) -> None:
+    def parse(self, command: str) -> None:
         """Parse a save command.
 
         Param command:

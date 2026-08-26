@@ -62,7 +62,7 @@ class LoadController(Controller):
             LoadSessionRequested(filename)
         )
 
-    def parse_load_command(self, command: str) -> None:
+    def parse(self, command: str) -> None:
         """Parse a load command.
 
         Param command:

@@ -6,7 +6,7 @@ class RenderController(Controller):
     def __init__(self):
         super(RenderController, self).__init__()
 
-    def parse_render_command(self, command: str) -> None:
+    def parse(self, command: str) -> None:
         """Parse a render command.
 
         Param command:
@@ -23,11 +23,15 @@ class RenderController(Controller):
             super().notify_observers(
                 RenderRequested()
             )
+            return
 
         if len(parts) == 1:
             super().notify_observers(
-                RenderRequested(image=parts[0])
+                RenderRequested(
+                    image = parts[0]
+                )
             )
+            return
 
         if (
             len(parts) == 3
@@ -35,13 +39,14 @@ class RenderController(Controller):
         ):
             super().notify_observers(
                 RenderRequested(
-                    image=parts[0], destination=parts[2]
+                    image = parts[0],
+                    destination = parts[2]
                 )
             )
+            return
 
         super().notify_observers(
             DisplayWarningRequested(
-                f"Invalid render command: {command}"
+                f"Invalid !! render command: {command}"
             )
         )
-

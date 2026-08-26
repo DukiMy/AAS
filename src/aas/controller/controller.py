@@ -26,9 +26,7 @@ class Controller:
             The controllerevent that will be sent to the observers.
 
         """
-        print("Notifying controllerevent")
         for observer in self._observers:
-            print(type(event))
             observer.on_controller_event(event)
 
     def _split_first(self, command: str) -> tuple[str | None, str]:
@@ -52,4 +50,35 @@ class Controller:
         remainder = parts[1] if len(parts) > 1 else ""
 
         return first, remainder
+
+    def parse_command(
+        self,
+        command: str,
+        commands: dict[str, Callable[[str], None]],
+    ) -> None:
+        """Parse a complete CLI command.
+
+        Param command:
+            The complete CLI command which will be parsed.
+
+        Returns:
+            An event from this controller or 'None' if the command is
+            malformed.
+
+        """
+        subcommand, remainder = self._split_first(command)
+
+        if subcommand is None:
+            return
+
+        parser = self._commands.get(subcommand)
+
+        if parser is None:
+            self.notify_observers(
+                DisplayWarningRequested(f"Invalid command: {command}")
+            )
+            return
+
+        parser(remainder)
+
 
