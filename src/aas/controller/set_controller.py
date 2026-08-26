@@ -155,7 +155,6 @@ class SetController(Controller):
             ChangeContrast(image, contrast)
         )
 
-
     def parse(self, command: str) -> None:
         """Parse a set command.
 
@@ -182,15 +181,19 @@ class SetController(Controller):
 
         if property_name == "width":
             self._parse_width(image, value)
+            return
 
         if property_name == "height":
             self._parse_height(image, value)
+            return
 
         if property_name == "brightness":
             self._parse_brightness(image, value)
+            return
 
         if property_name == "contrast":
             self._parse_contrast(image, value)
+            return
 
         super().notify_observers(
             DisplayWarningRequested(f"Invalid command: {command}")

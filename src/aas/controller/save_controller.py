@@ -32,6 +32,7 @@ class SaveController(Controller):
             super().notify_observers(
                 SaveSessionRequested(filename)
             )
+            return
 
         super().notify_observers(
             DisplayWarningRequested(
