@@ -17,3 +17,6 @@ coverage.xml
 
 # Uv specifics
 uv.lock
+
+# Testrun files
+*.json
