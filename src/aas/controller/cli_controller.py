@@ -16,14 +16,13 @@ from aas.controller.load_controller import LoadController
 from aas.controller.set_controller import SetController
 from aas.controller.render_controller import RenderController
 from aas.controller.save_controller import SaveController
+import readline
 
 class CLIController(Controller):
     """Control CLI interaction."""
 
     def __init__(self) -> None:
-        """Initialize controller."""
-
-        super(CLIController, self).__init__()
+        super().__init__()
 
         self._commands = {
             "load": LoadController().parse,
@@ -36,16 +35,16 @@ class CLIController(Controller):
 
     def start(self) -> None:
         """Start accepting commands."""
-        while True:
-            super().notify_observers(DisplayNoticeRequested("AAS: "))
 
+        while True:
             try:
-                command = input().strip()
+                command = input("AAS: ").strip()
 
             except (KeyboardInterrupt, EOFError):
                 super().parse_command("quit", self._commands)
+                return
 
-            if command is None:
+            if not command:
                 continue
 
             super().parse_command(command, self._commands)
