@@ -20,3 +20,6 @@ uv.lock
 
 # Testrun files
 *.json
+
+# Image files
+img/
