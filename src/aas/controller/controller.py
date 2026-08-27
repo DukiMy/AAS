@@ -1,4 +1,4 @@
-from aas.events.events import ControllerEvent
+from aas.events.events import (ControllerEvent, DisplayWarningRequested)
 from aas.events.protocols import ControllerObserver
 
 
@@ -71,7 +71,7 @@ class Controller:
         if subcommand is None:
             return
 
-        parser = self._commands.get(subcommand)
+        parser = commands.get(subcommand)
 
         if parser is None:
             self.notify_observers(
