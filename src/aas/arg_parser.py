@@ -34,8 +34,10 @@ commands:
   render ALIAS to DESTINATION   render ascii to file at DESTINATION
   set ALIAS brightness FACTOR   set brightness to a multiple of FACTOR
   set ALIAS contrast FACTOR     set contrast to a multiple of FACTOR
+  set ALIAS height FACTOR       set height to VALUE
+  set ALIAS width FACTOR        set width to VALUE
   save session as SESSION_NAME  save the current session under SESSION_NAME
-  load session as SESSION_NAME  load a session under SESSION_NAME
+  load session SESSION_NAME     load a session under SESSION_NAME
   info                          print session info
   quit                          exit the program
 
